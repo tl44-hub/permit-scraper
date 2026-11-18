@@ -1,0 +1,51 @@
+sources:
+
+  - id: chicago_permits
+    category: permit
+    jurisdiction: Chicago, IL
+    adapter: socrata
+    domain: data.cityofchicago.org
+    dataset: ydr8-5enu
+    date_field: application_start_date
+    days_back: 14
+    map:
+      record_id: id
+      address: [street_number, street_direction, street_name]
+      event_date: application_start_date
+      status: permit_status
+      description: work_description
+      party: permit_type
+      amount: reported_cost
+
+  - id: chicago_code_violations
+    category: code_violation
+    jurisdiction: Chicago, IL
+    adapter: socrata
+    domain: data.cityofchicago.org
+    dataset: 22u3-xenr
+    date_field: violation_date
+    days_back: 14
+    map:
+      record_id: id
+      address: address
+      event_date: violation_date
+      status: violation_status
+      description: violation_description
+      party: violation_code
+
+  - id: example_county_preforeclosure
+    enabled: false
+    category: preforeclosure
+    jurisdiction: Example County, XX
+    adapter: html
+    url: https://example-county.gov/recorder/lis-pendens
+    row_selector: "table#results tbody tr"
+    next_page_selector: "a.next"
+    max_pages: 5
+    fields:
+      record_id: "td:nth-child(1)"
+      event_date: "td:nth-child(2)"
+      address: "td:nth-child(3)"
+      party: "td:nth-child(4)"
+      description: "td:nth-child(5)"
+      url: "a"
