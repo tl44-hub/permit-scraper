@@ -1,7 +1,7 @@
 import asyncio, json, hashlib, logging, sys, yaml, httpx
 from scraper.adapters import ADAPTERS
 from scraper.db import open_db, upsert, export_csv, now
-
+from scraper.leads import build_leads
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("scraper")
 CONCURRENCY = asyncio.BoundedSemaphore(4)
@@ -57,7 +57,8 @@ async def main():
     db = await open_db("data/records.db")
     async with httpx.AsyncClient() as client:
         results = await asyncio.gather(*(run_source(client, db, s) for s in sources))
-    await export_csv(db, "data/exports", started)
+    await export_csv(db, "data/exports", started) 
+    await build_leads(db, "data/exports")
     await db.close()
     if sources and all(r is None for r in results):
         sys.exit(1)
