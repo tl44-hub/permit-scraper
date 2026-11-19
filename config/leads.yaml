@@ -1,0 +1,12 @@
+permits:
+  min_cost: 100000
+  types: [NEW CONSTRUCTION, RENOVATION, ALTERATION, WRECKING, DEMOLITION]
+  days: 30
+violations:
+  open_statuses: [OPEN]
+  days: 30
+top_leads:
+  days: 7
+  max_permits: 50
+  max_distressed: 50
+  min_open_violations: 2
