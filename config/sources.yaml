@@ -33,19 +33,60 @@ sources:
       description: violation_description
       party: violation_code
 
-  - id: example_county_preforeclosure
-    enabled: false
+  - id: sf_permits
+    category: permit
+    jurisdiction: San Francisco, CA
+    adapter: socrata
+    domain: data.sfgov.org
+    dataset: i98e-djp9
+    date_field: filed_date
+    days_back: 14
+    map:
+      record_id: permit_number
+      address: [street_number, street_name, street_suffix]
+      event_date: filed_date
+      status: status
+      description: description
+      party: permit_type_definition
+      amount: estimated_cost
+
+  - id: sf_code_violations
+    category: code_violation
+    jurisdiction: San Francisco, CA
+    adapter: socrata
+    domain: data.sfgov.org
+    dataset: nbtm-fbw5
+    date_field: date_filed
+    days_back: 14
+    map:
+      record_id: [complaint_number, item_sequence_number]
+      address: [street_number, street_name, street_suffix]
+      event_date: date_filed
+      status: status
+      description: nov_item_description
+      party: nov_category_description
+
+  - id: kluever_foreclosure_sales
     category: preforeclosure
-    jurisdiction: Example County, XX
-    adapter: html
-    url: https://example-county.gov/recorder/lis-pendens
-    row_selector: "table#results tbody tr"
-    next_page_selector: "a.next"
-    max_pages: 5
-    fields:
-      record_id: "td:nth-child(1)"
-      event_date: "td:nth-child(2)"
-      address: "td:nth-child(3)"
-      party: "td:nth-child(4)"
-      description: "td:nth-child(5)"
-      url: "a"
+    jurisdiction: Cook County, IL
+    adapter: table
+    url: https://www.klueverlawgroup.com/4BA773/kp_sales.html
+    columns:
+      event_date: "Sale Date"
+      record_id: "File #"
+      street: "Street"
+      city: "City"
+      zip: "Zip"
+      amount: "Bid"
+    keep:
+      County: Cook
+    static:
+      status: Auction scheduled
+      description: Foreclosure auction scheduled
+    map:
+      record_id: record_id
+      address: [street, city, zip]
+      event_date: event_date
+      amount: amount
+      status: status
+      description: description
