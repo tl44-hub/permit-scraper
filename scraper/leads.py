@@ -94,7 +94,7 @@ async def build_leads(db, out_dir, cfg_path="config/leads.yaml"):
         a = norm_addr(r["address"])
         if not good_addr(a) or (r["event_date"] or "") < vsince:
             continue
-        if not any(k in (r["status"] or "").upper() for k in open_words):
+        if (r["status"] or "").strip().upper() not in open_words:      # exact match, so INACTIVE is not ACTIVE
             continue
         vg.setdefault(a, []).append(r)
     viol = []
