@@ -1,12 +1,14 @@
+# Tweak these to change what customers receive. No code needed.
 permits:
   min_cost: 100000
-  types: [NEW CONSTRUCTION, RENOVATION, ALTERATION, WRECKING, DEMOLITION, EXPRESS PERMIT]
+  types: [NEW CONSTRUCTION, RENOVATION, ALTERATION, WRECKING, DEMOLITION]
+  exclude_statuses: [CANCEL, REVOK, VOID, WITHDRAWN, EXPIRED, DISAPPROV, COMPLETE]   # dead or finished permits
   days: 30
 violations:
-  open_statuses: [OPEN]
+  open_statuses: [OPEN]          # add other words that mean "still open", e.g. ACTIVE
   days: 30
-top_leads:
-  days: 7
-  max_permits: 50
-  max_distressed: 50
-  min_open_violations: 2
+weekly:
+  max_leads: 200                 # cap per week; the rest wait for next week
+  min_open_violations: 2         # distinct open violations needed to count as distressed
+  strip_city_suffixes: [CHICAGO]   # lets a foreclosure at '9 S ELM ST CHICAGO 60601' match '9 S ELM ST'
+  mark_delivered: true           # set false while testing so test runs don't use up leads
